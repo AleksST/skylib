@@ -1,9 +1,9 @@
 <?php
 namespace Application\Model;
-use Zend\Db\Table\AbstractTable,
+use Zend\Db\TableGateway\TableGateway,
     Zend\Db\Expr;
 
-abstract class AppTableAbstract extends AbstractTable
+abstract class AppTableAbstract extends TableGateway
 {
     /**
      * Zend\Db\Expr('now()')
@@ -14,8 +14,8 @@ abstract class AppTableAbstract extends AbstractTable
     private   $_defAutocompleteCols = array('created', 'modified');
     // values hashed by md5 
     public    $protectCols = array();
-
-
+    
+    
     public function init() 
     {
         $this->now = new Expr('now()');

@@ -7,7 +7,9 @@ use Zend\Mvc\Controller\ActionController,
     Application\Form\Library as LibraryForm,
     Application\Form\LoadMarc,
     Application\Form\Worker,
-    Application\Form\LibraryRequest;
+    Application\Form\LibraryRequest,
+    Zend\Db\TableGateway\TableGateway,
+    Zend\Db\Adapter\Adapter;
 
 class IndexController extends ActionController
 {
@@ -25,7 +27,14 @@ class IndexController extends ActionController
     
     public function setLibraryTable ($libraryTable)
     {
-        $this->libraryTable = $libraryTable;
+        $adapter = new Adapter(array(
+                'driver' => 'Pdo_Mysql',
+                'database' => 'skylib',
+                'host' => 'localhost',
+                'username' => 'root',
+                'password' => 'pass',
+        ));
+        $this->libraryTable = new TableGateway('library',$adapter);
         return $this;
     }
 
@@ -33,8 +42,8 @@ class IndexController extends ActionController
     {
         $id = ($id) ?: $this->getRequest()->query()->id;
         $id = ($id <= 0) ? 1 : $id;
-        $row = $this->libraryTable->getLibrary($id);
-        return array('row'=>$row);
+        $row = $this->libraryTable->select(array('id'=>$id));
+        return array('row'=>$row->current());
     }
     
     public function formAction() 

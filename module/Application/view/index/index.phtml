@@ -1,6 +1,8 @@
 <div >
 <?php foreach ($row as $col=> $val): ?>
-    <div> <? echo $col; ?> </div><div> <? echo $val; ?> </div>
+    <div>
+        <?php echo $col . ' : ' . $val;?>
+    </div>
 <?php endforeach; ?>
-
+<?php echo $row->name;?>
 </div>
